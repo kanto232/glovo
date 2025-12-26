@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ('username', 'email', 'password', 'first_name', 'last_name',
-                  'age', 'phone_number', 'status')
+                  'phone_number', 'role')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -153,11 +153,7 @@ class StoreMenuDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'menu_name', 'store_product']
 
 
-    def get_good_review(self, obj):
-        return obj.get_good_review()
-
 class ReviewCreateEditSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Review
         fields = '__all__'
@@ -167,7 +163,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     created_date = serializers.DateTimeField(format="%d-%m-%Y %H:%S")
     class Meta:
         model = Review
-        fields = ['id', 'client', 'rating', 'text', 'created_Date']
+        fields = ['id', 'client', 'rating', 'text', 'created_date']
 
 class StoreDetailSerializer(serializers.ModelSerializer):
     store_menu = StoreMenuDetailSerializer(many=True, read_only=True)
@@ -180,3 +176,6 @@ class StoreDetailSerializer(serializers.ModelSerializer):
         model = Store
         fields = ['id', 'store_image', 'store_name', 'store_menu', 'store_contact', 'store_address',
                   'description', 'owner', 'created_date', 'good_review', 'review_store']
+
+    def get_good_review(self, obj):
+        return obj.get_good_review()
